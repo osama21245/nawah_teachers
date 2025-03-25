@@ -10,10 +10,10 @@ class AddQuizCubit extends Cubit<AddQuizCubitState> {
 
   final QuizzesRepository quizzesRepository;
 
-  Future<void> addQuiz(QuizModel quiz) async {
+  Future<void> addQuiz(QuizModel quiz, String teacherId) async {
     emit(state.copyWith(state: AddQuizState.loading));
     print('Cubit: Adding quiz');
-    final result = await quizzesRepository.addQuiz(quiz);
+    final result = await quizzesRepository.addQuiz(quiz, teacherId);
     result.fold(
       (failure) {
         print('Cubit: Failed to add quiz - ${failure.message}');

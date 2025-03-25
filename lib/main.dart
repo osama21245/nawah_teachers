@@ -1,12 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'features/quizzes/presentation/cubits/add_quizzes/add_quiz_cubit.dart';
-import 'features/quizzes/presentation/screens/add_quiz_screen.dart';
+import 'package:kinde_flutter_sdk/kinde_flutter_sdk.dart';
+import 'package:nawah_teachers/features/auth/data/data_source/auth_remote_data_source.dart'
+    show AuthRemoteDataSource, AuthRemoteDataSourceImpl;
+import 'package:nawah_teachers/features/auth/data/repository/auth_repository.dart'
+    show AuthRepository;
+import 'package:nawah_teachers/features/auth/presentation/cubits/auth/auth_cubit.dart';
+import 'package:nawah_teachers/features/auth/presentation/screens/auth_wrapper.dart'
+    show AuthWrapper;
+import 'package:nawah_teachers/features/quizzes/presentation/screens/add_quiz_screen.dart';
+import 'core/firebase/firebase_service.dart';
 import 'init_dependences.dart';
 
-void main() {
+import 'features/quizzes/presentation/cubits/add_quizzes/add_quiz_cubit.dart';
+import 'features/videos/presentation/cubits/add_videos/add_video_cubit.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize dependencies
   initDependencies();
+
+  // await KindeFlutterSDK.initializeSDK(
+  //   authDomain: "https://easyresume.kinde.com",
+  //   authClientId: "19ed3e255474413ba6a20e24338041fd",
+  //   loginRedirectUri: "com.kinde.myapp://kinde_callback",
+  //   logoutRedirectUri: "com.kinde.myapp://kinde_logoutcallback",
+  //   scopes: ["email", "profile", "offline", "openid"],
+  // );
+
   runApp(const MyApp());
 }
 
@@ -17,7 +39,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Nawah Teachers',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -37,9 +59,25 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: BlocProvider(
-        create: (context) => serviceLocator.get<AddQuizCubit>(),
-        child: const AddQuizScreen(),
+      home: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) => serviceLocator<AddVideoCubit>(),
+          ),
+          BlocProvider(
+            create: (context) => AuthCubit(
+              AuthRepository(
+                AuthRemoteDataSourceImpl(
+                  FirebaseService(),
+                ),
+              ),
+            ),
+          ),
+        ],
+        child: BlocProvider(
+          create: (context) => serviceLocator<AddQuizCubit>(),
+          child: const AddQuizScreen(),
+        ),
       ),
     );
   }

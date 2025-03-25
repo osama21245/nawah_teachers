@@ -41,22 +41,15 @@ Future<Either<Failure, T>> executeTryAndCatchForRepository<T>(
 
 Future<T> executeTryAndCatchForDataLayer<T>(Future<T> Function() action) async {
   try {
-    var check = await Connectivity().checkConnectivity();
-
-    if (check == ConnectivityResult.mobile ||
-        check == ConnectivityResult.wifi) {
-      return await action();
-    } else {
-      throw NoInternetException();
-    }
+    return await action();
   } on DioException catch (e) {
+    // Don't throw an error for successful responses
+    if (e.response?.statusCode == 200 || e.response?.statusCode == 201) {
+      if (e.response?.data != null) {
+        return e.response!.data as T;
+      }
+    }
     throw Exception(_handleDioError(e));
-  } on TimeoutException catch (e) {
-    throw Exception('Operation timed out: ${e.message}');
-  } on SocketException catch (e) {
-    throw Exception('Network error: ${e.message}');
-  } on FormatException catch (e) {
-    throw FormatException('Error parsing data: ${e.message}');
   } catch (e) {
     throw Exception('An unexpected error occurred: ${e.toString()}');
   }

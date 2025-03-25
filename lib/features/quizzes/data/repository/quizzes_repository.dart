@@ -10,15 +10,68 @@ class QuizzesRepository {
 
   QuizzesRepository(this.remoteDataSouce);
 
-  Future<Either<Failure, QuizModel>> addQuiz(QuizModel quiz) async {
+  Future<Either<Failure, QuizModel>> addQuiz(
+      QuizModel quiz, String teacherId) async {
     return executeTryAndCatchForRepository(() async {
-      return QuizModel.fromMap(await remoteDataSouce.addQuiz(quiz));
+      final result = await remoteDataSouce.addQuiz(quiz, teacherId);
+      return result.fold(
+        (firebaseFailure) => throw Exception(firebaseFailure.message),
+        (quiz) => quiz,
+      );
     });
   }
 
-  // Future<Either<Failure, List<QuizModel>>> getQuizzes() async {
-  //   return executeTryAndCatchForRepository(() async {
-  //     return (await remoteDataSouce.getQuizzes()).map((quiz) => QuizModel.fromMap(quiz));
-  //   });
-  // }
+  Future<Either<Failure, List<QuizModel>>> getTeacherQuizzes(
+      String teacherId) async {
+    return executeTryAndCatchForRepository(() async {
+      final result = await remoteDataSouce.getTeacherQuizzes(teacherId);
+      return result.fold(
+        (firebaseFailure) => throw Exception(firebaseFailure.message),
+        (quizzes) => quizzes,
+      );
+    });
+  }
+
+  Future<Either<Failure, QuizModel>> getQuiz(
+      String quizId, String teacherId) async {
+    return executeTryAndCatchForRepository(() async {
+      final result = await remoteDataSouce.getQuiz(quizId, teacherId);
+      return result.fold(
+        (firebaseFailure) => throw Exception(firebaseFailure.message),
+        (quiz) => quiz,
+      );
+    });
+  }
+
+  Future<Either<Failure, QuizModel>> updateQuiz(
+      String quizId, QuizModel quiz, String teacherId) async {
+    return executeTryAndCatchForRepository(() async {
+      final result = await remoteDataSouce.updateQuiz(quizId, quiz, teacherId);
+      return result.fold(
+        (firebaseFailure) => throw Exception(firebaseFailure.message),
+        (quiz) => quiz,
+      );
+    });
+  }
+
+  Future<Either<Failure, Unit>> deleteQuiz(
+      String quizId, String teacherId) async {
+    return executeTryAndCatchForRepository(() async {
+      final result = await remoteDataSouce.deleteQuiz(quizId, teacherId);
+      return result.fold(
+        (firebaseFailure) => throw Exception(firebaseFailure.message),
+        (_) => unit,
+      );
+    });
+  }
+
+  Stream<Either<Failure, List<QuizModel>>> watchTeacherQuizzes(
+      String teacherId) {
+    return remoteDataSouce
+        .watchTeacherQuizzes(teacherId)
+        .map((result) => result.fold(
+              (firebaseFailure) => Left(Failure(firebaseFailure.message)),
+              (quizzes) => Right(quizzes),
+            ));
+  }
 }

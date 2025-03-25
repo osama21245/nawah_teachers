@@ -1,5 +1,13 @@
 class ApiLinks {
-  static const String domain = 'http://10.0.2.2:8000/';
-  static const String getQuizzes = '${domain}get-quizzes';
-  static const String addQuiz = '${domain}store-quiz';
+  static const String baseUrl =
+      'https://ghostwhite-penguin-556356.hostingersite.com';
+
+  // Quiz endpoints
+  static const String getQuizzes = '$baseUrl/get-quizzes';
+  static const String addQuiz = '$baseUrl/store-quiz';
+
+  // Video endpoints
+  static const String getVideos = '$baseUrl/get-videos';
+  static const String addVideo = '$baseUrl/store-video';
+  static const String uploadVideo = '$baseUrl/api/upload-video';
 }

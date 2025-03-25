@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "349874521433",
+    "project_id": "easyway-9dad3",
+    "storage_bucket": "easyway-9dad3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349874521433:android:0c5d732fa51d999f917848",
+        "android_client_info": {
+          "package_name": "cloud.osamagamil.easyway"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgXXX0XVFzmcE4jsi-yT_B9hsuYxmUJAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349874521433:android:869de10c198e7976917848",
+        "android_client_info": {
+          "package_name": "com.example.nawah_teachers"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgXXX0XVFzmcE4jsi-yT_B9hsuYxmUJAs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

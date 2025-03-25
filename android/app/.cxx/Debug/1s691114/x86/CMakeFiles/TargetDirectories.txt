@@ -1,0 +1,2 @@
+/Users/osama/Documents/flutterApps/nawah_teachers/android/app/.cxx/Debug/1s691114/x86/CMakeFiles/edit_cache.dir
+/Users/osama/Documents/flutterApps/nawah_teachers/android/app/.cxx/Debug/1s691114/x86/CMakeFiles/rebuild_cache.dir
